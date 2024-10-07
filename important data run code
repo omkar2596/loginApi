@@ -1,0 +1,68 @@
+/myapp
+│
+├── /routes
+│   ├── auth.js
+│
+├── /config
+│   ├── db.js
+│   ├── mail.js
+│
+├── index.js
+├── package.json
+└── .env
+//package install
+npm init -y
+npm install express mysql2 bcrypt jsonwebtoken nodemailer dotenv
+
+//Set Up Environment Variables
+DB_HOST=your_database_host
+DB_USER=your_database_username
+DB_PASS=your_database_password
+DB_NAME=your_database_name
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_email_password_or_app_password
+PORT=3000
+
+// Run the Server
+node index.js
+//Or, if you want to automatically
+// restart your server whenever you make changes, you can use nodemon. Install it globally with:
+npm install -g nodemon
+nodemon index.js
+
+
+
+//create table query for users table
+// CREATE TABLE users (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     username VARCHAR(255) NOT NULL UNIQUE,
+//     password VARCHAR(255) NOT NULL,
+//     email VARCHAR(255) NOT NULL UNIQUE,
+//     firstName VARCHAR(255) NOT NULL,
+//     lastName VARCHAR(255) NOT NULL,
+//     mobile VARCHAR(15) NOT NULL,
+//     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+//     login_attempts INT DEFAULT 0,
+//     locked_until DATETIME,
+//     reset_token VARCHAR(255),
+//     token_expires DATETIME
+// );
+
+CREATE TABLE sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    expires_at DATETIME NOT NULL,
+    revoked BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+
+http://localhost:3000/auth/protected-route
+http://localhost:3000/auth/logout   
+http://localhost:3000/auth/reset-password
+http://localhost:3000/auth/forgot-password
+http://localhost:3000/auth/login
+http://localhost:3000/auth/register
